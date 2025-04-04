@@ -22,12 +22,6 @@ jobs:
         STREAM_KEY="FB-684841160889136-0-Ab0dZL4j12AwfD8ku6SM9U3f"  # مفتاح البث الخاص بك
         FB_URL="rtmps://live-api-s.facebook.com:443/rtmp/$STREAM_KEY"
 
-        # التحقق من اتصال الإنترنت
-        check_internet() {
-          ping -c 1 google.com > /dev/null 2>&1
-          return $?
-        }
-
         # التحقق من توفر الرابط M3U8
         check_m3u8() {
           curl -s --head "$M3U8_URL" | grep "200 OK" > /dev/null
@@ -36,13 +30,6 @@ jobs:
 
         # حلقة البث
         while true; do
-          echo "التحقق من الاتصال بالإنترنت..."
-          if ! check_internet; then
-            echo "لا يوجد اتصال بالإنترنت. إعادة المحاولة بعد 10 ثواني..."
-            sleep 10
-            continue
-          fi
-
           echo "التحقق من توفر رابط M3U8..."
           if ! check_m3u8; then
             echo "الرابط غير متوفر. إعادة المحاولة بعد 10 ثواني..."
